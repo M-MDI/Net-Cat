@@ -19,8 +19,9 @@ func main() {
         return
     }
     defer conn.Close()
-    
-    // Handle incoming messages
+        /**
+            Handle incoming messages
+        */
     go func() {
         scanner := bufio.NewScanner(conn)
         for scanner.Scan() {
@@ -28,7 +29,9 @@ func main() {
         }
     }()
     
-    // Send messages to server
+    /**
+        Send messages to server
+     */
     scanner := bufio.NewScanner(os.Stdin)
     for scanner.Scan() {
         _, err := fmt.Fprintln(conn, scanner.Text())

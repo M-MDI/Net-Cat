@@ -19,12 +19,14 @@ var (
 
 func handleConnection(conn net.Conn) {
     defer conn.Close()
-    
-    // Greet the new client
+        /**
+            Read client name
+        */
     fmt.Fprintf(conn, "Welcome to TCP-Chat!\n")
     fmt.Fprintf(conn, "Enter your name: ")
-    
-    // Read client name
+        /**
+            Read client name
+        */
     scanner := bufio.NewScanner(conn)
     if scanner.Scan() {
         name := scanner.Text()
@@ -32,19 +34,24 @@ func handleConnection(conn net.Conn) {
         clientsLock.Lock()
         clients[conn] = name
         clientsLock.Unlock()
-        
-        // Notify other clients
+        /**
+            Notify other clients
+         */
+    
         broadcast(fmt.Sprintf("%s has joined the chat...\n", name))
-        
-        // Handle incoming messages
+        /**
+            Handle incoming messages
+        */ 
         for scanner.Scan() {
             msg := scanner.Text()
             if msg != "" {
                 broadcast(fmt.Sprintf("[%s][%s]: %s\n", time.Now().Format("2006-01-02 15:04:05"), name, msg))
             }
         }
+            /**
+                Notify others when a client leaves
+            */
         
-        // Notify others when a client leaves
         clientsLock.Lock()
         delete(clients, conn)
         clientsLock.Unlock()
