@@ -65,7 +65,6 @@ func broadcast(message string) {
         }
     }
 }
-
 func main() {
     port := defaultPort
     if len(os.Args) > 1 {
