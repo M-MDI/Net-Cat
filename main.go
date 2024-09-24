@@ -39,19 +39,14 @@ func handleConnection(conn net.Conn) {
          */
     
         broadcast(fmt.Sprintf("%s has joined the chat...\n", name))
-        /**
-            Handle incoming messages
-        */ 
+        /*******/ /*<---  Handle incoming messages --->*/ /********/ 
         for scanner.Scan() {
             msg := scanner.Text()
             if msg != "" {
                 broadcast(fmt.Sprintf("[%s][%s]: %s\n", time.Now().Format("2006-01-02 15:04:05"), name, msg))
             }
         }
-            /**
-                Notify others when a client leaves
-            */
-        
+            /*******/ /*<--- Notify others when a client leaves --->*/ /********/
         clientsLock.Lock()
         delete(clients, conn)
         clientsLock.Unlock()
@@ -72,6 +67,9 @@ func broadcast(message string) {
         }
     }
 }
+
+/*******/ /*<---  comment --->*/ /********/
+
 func main() {
     port := defaultPort
     if len(os.Args) > 1 {

@@ -22,7 +22,6 @@ func main() {
         /**
             Handle incoming messages
         */
-    go func() {
         scanner := bufio.NewScanner(conn)
         for scanner.Scan() {
             fmt.Println(scanner.Text())
