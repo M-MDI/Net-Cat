@@ -50,7 +50,15 @@ func HandleConnection(conn net.Conn) {
 			c.conn.Write([]byte(message1))
 		}
 	}
-
+	/**
+		<!--				comment 				--!>
+	*/
+	for _, msg := range messages {
+		conn.Write([]byte(msg))
+	}
+	/**
+		<!--				comment 				--!>
+	*/
 	scanner := bufio.NewScanner(conn)
 	for scanner.Scan() {
 		msg := scanner.Text()
@@ -58,10 +66,18 @@ func HandleConnection(conn net.Conn) {
 			conn.Write([]byte("\033[1A\033[2K")) // Effacer la ligne dans le terminal du client
 			conn.Write([]byte(fmt.Sprintf("[%s][%s]: %s\n", time.Now().Format("2006-01-02 15:04:05"), name, msg)))
 			broadcastMessage(fmt.Sprintf("[%s][%s]: %s\n", time.Now().Format("2006-01-02 15:04:05"), name, msg), client)
+
+
+			// Add the message to the list of messages
+			mutex.Lock()
+			messages = append(messages, fmt.Sprintf("[%s][%s]: %s\n", time.Now().Format("2006-01-02 15:04:05"), name, msg))
+			mutex.Unlock()
 		}
 	}
-
-	//Remove the client from the list of connected clients
+	/**
+		<!--		Remove the client from the list of connected clients		--!>
+	*/
+	
 	delete(clients, client)
 
 	message := fmt.Sprintf("%s has left our chat...\n", name)
@@ -69,7 +85,10 @@ func HandleConnection(conn net.Conn) {
 		if c != client {
 			c.conn.Write([]byte(message))
 		}
-	}
-	// Close the connection with the client
+	}	
+	/**
+		<!--				 Close the connection with the client				--!>
+	*/
+
 	conn.Close()
 }
