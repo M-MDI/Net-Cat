@@ -1,21 +1,23 @@
 package utils
-
 import (
 	"net"
 	"sync"
 )
-	/**
-		<!--				comment 				--!>
-	*/
+/*
+*
+<!--				comment 				--!>
+*/
 type Client struct {
 	conn net.Conn
 	name string
 }
-	/**
-		<!--				comment 				--!>
-	*/
+/*
+*
+<!--				comment 				--!>
+*/
 var (
-	clients = make(map[Client]bool)
-	messages  = []string{}
-	mutex   = &sync.Mutex{}
+	clients    = make(map[Client]bool)
+	messages   = []string{}
+	mutex      = &sync.Mutex{}
+	maxClients = 10
 )
